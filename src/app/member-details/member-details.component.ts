@@ -3,8 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AppService } from '../app.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { forkJoin } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
-interface Member {
+export interface Member {
   firstName: string;
   lastName: string;
   jobTitle: string;
@@ -17,7 +18,7 @@ interface Member {
   templateUrl: './member-details.component.html',
   styleUrls: ['./member-details.component.css']
 })
-export class MemberDetailsComponent implements OnInit, OnChanges {
+export class MemberDetailsComponent implements OnInit {
   memberModel: Member;
   memberForm: FormGroup;
   submitted = false;
@@ -33,55 +34,77 @@ export class MemberDetailsComponent implements OnInit, OnChanges {
     private activatedRoute: ActivatedRoute
   ) {}
 
-  // TODO: Refactor here?
   ngOnInit() {
+    this.appService
+      .getTeams()
+      .pipe(
+        tap(() => {
+          this.memberForm = this.getMemberForm();
+          if (!this.isNewMemberPage()) {
+            this.memberId = this.activatedRoute.snapshot.params.id;
+            this.appService.getMember(this.memberId).subscribe(member => {
+              this.memberForm.patchValue(member);
+            });
+          }
+        })
+      )
+      .subscribe(teams => {
+        this.teams = teams;
+      });
+  }
+
+  onSubmit(): void {
+    this.memberModel = this.memberForm.value;
     if (this.isNewMemberPage()) {
-      this.appService.getTeams().subscribe(teams => {
-        this.teams = teams;
-        this.memberForm = this.getMemberForm();
-      });
+      this.onAdd();
     } else {
-      this.memberId = this.activatedRoute.snapshot.params.id;
-      forkJoin([
-        this.appService.getTeams(),
-        this.appService.getMember(this.memberId)
-      ]).subscribe(([teams, member]) => {
-        this.teams = teams;
-        this.memberForm = this.getMemberForm();
-        this.memberForm.patchValue(member);
-        console.log(this.memberForm.value);
-      });
+      this.onUpdate();
     }
   }
 
-  ngOnChanges() {}
-
-  // TODO: refactor here
-  onSubmit(form: FormGroup) {
-    this.memberModel = form.value;
-    if (this.isNewMemberPage()) {
-      this.appService.addMember(this.memberModel).subscribe(res => {
+  onAdd(): void {
+    this.appService.addMember(this.memberModel).subscribe(
+      () => {
         this.handleSuccess('success');
-      });
-    } else {
-      this.appService
-        .updateMember(this.memberId, this.memberModel)
-        .subscribe(() => {
-          this.handleSuccess('success');
-        });
-    }
+      },
+      err => {
+        this.handleError(err);
+      }
+    );
+  }
+
+  onUpdate(): void {
+    this.appService.updateMember(this.memberId, this.memberModel).subscribe(
+      () => {
+        this.handleSuccess('success');
+      },
+      err => {
+        this.handleError(err);
+      }
+    );
   }
 
   onDelete(): void {
-    this.appService.deleteMember(this.memberId).subscribe(res => {
-      this.handleSuccess('Deteled great');
-    });
+    this.appService.deleteMember(this.memberId).subscribe(
+      () => {
+        this.handleSuccess('Deleted great');
+      },
+      err => {
+        this.handleError(err);
+      }
+    );
   }
 
+  //TODO: refactor with alert service;
   handleSuccess(message: string): void {
     // TODO: add alert service to send message
     console.log(message);
     this.router.navigate(['/members']);
+  }
+
+  handleError(message: string): void {
+    // TODO: add alert service to send message
+    console.log(message);
   }
 
   isNewMemberPage(): boolean {
