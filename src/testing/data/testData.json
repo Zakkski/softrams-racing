@@ -1,0 +1,30 @@
+{
+  "members": [
+    {
+      "id": 1,
+      "firstName": "Gob",
+      "lastName": "Bluth",
+      "jobTitle": "Magician",
+      "team": "Sitwell's Sluggers",
+      "status": "Inactive"
+    },
+    {
+      "id": 2,
+      "firstName": "Egg",
+      "lastName": "Veal",
+      "jobTitle": "Short Stop",
+      "team": "Bluth Family Players",
+      "status": "Active"
+    }
+  ],
+  "teams": [
+    {
+      "id": 1,
+      "teamName": "Sitwell's Sluggers"
+    },
+    {
+      "id": 2,
+      "teamName": "Bluth Family Players"
+    }
+  ]
+}
