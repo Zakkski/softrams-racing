@@ -1,9 +1,9 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AppService } from '../app.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { forkJoin } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { AlertService } from '../shared/alert.service';
 
 export interface Member {
   firstName: string;
@@ -31,7 +31,8 @@ export class MemberDetailsComponent implements OnInit {
     private fb: FormBuilder,
     private appService: AppService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private alertService: AlertService
   ) {}
 
   ngOnInit() {
@@ -65,10 +66,12 @@ export class MemberDetailsComponent implements OnInit {
   onAdd(): void {
     this.appService.addMember(this.memberModel).subscribe(
       () => {
-        this.handleSuccess('success');
+        this.handleSuccess('Member has been added!');
       },
       err => {
-        this.handleError(err);
+        this.alertService.alert(
+          `There was an error adding this member: ${err}`
+        );
       }
     );
   }
@@ -76,35 +79,34 @@ export class MemberDetailsComponent implements OnInit {
   onUpdate(): void {
     this.appService.updateMember(this.memberId, this.memberModel).subscribe(
       () => {
-        this.handleSuccess('success');
+        this.handleSuccess('Member has been updated!');
       },
       err => {
-        this.handleError(err);
+        this.alertService.alert(
+          `There was an error updating this member: ${err}`
+        );
       }
     );
   }
 
   onDelete(): void {
-    this.appService.deleteMember(this.memberId).subscribe(
-      () => {
-        this.handleSuccess('Deleted great');
-      },
-      err => {
-        this.handleError(err);
-      }
-    );
+    if (window.confirm('Are you sure you want to delete this member?')) {
+      this.appService.deleteMember(this.memberId).subscribe(
+        () => {
+          this.handleSuccess('Member has been deleted!');
+        },
+        err => {
+          this.alertService.alert(
+            `There was an error deleting this member: ${err}`
+          );
+        }
+      );
+    }
   }
 
-  //TODO: refactor with alert service;
   handleSuccess(message: string): void {
-    // TODO: add alert service to send message
-    console.log(message);
+    this.alertService.alert(message);
     this.router.navigate(['/members']);
-  }
-
-  handleError(message: string): void {
-    // TODO: add alert service to send message
-    console.log(message);
   }
 
   isNewMemberPage(): boolean {

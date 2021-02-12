@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,15 +11,25 @@ export class AppService {
   username: string;
 
   constructor(private http: HttpClient) {}
+  // TODO:
+  // 14. Add authguard (can't access pages unless logged in)
+  // 18. candeactivate guard for member form
+  // 15. member detail form should have client side validation
+  // 16. member detail form should have server side validation
+  // 2. Implement snackbar
+  // 3. implement canDeactivate with edited page
+  // 4. add error handling for form
+  // 5. add loading spinner for members deatils and list page
+  // 6. possibly lock fields for member details until 'edit' is pressed
+  // 7. Test Login component
+  // 8. test app component
+  // 9. test component interactions Member comp
+  // 10. test component interactions Member detail comp
+  // 11. investigate the 'cannot match routes' in test errors (app component)
+  // 17. refactor server?
+  // 12. final proof and refactor
+  // 13. Try running with zip file
 
-  // Returns all members
-  // TODO: IMplement delete with confirm?
-  // Members page needs mapping to team names
-  // Implement snackbar
-  // implement canDeactivate with edited page
-  // add error handling for form
-  // add loading spinner for members deatils and list page
-  // possibly lock fields for member details until 'edit' is pressed
   getMembers() {
     return this.http
       .get(`${this.api}/members`)

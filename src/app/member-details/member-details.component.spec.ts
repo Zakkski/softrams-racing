@@ -8,6 +8,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AppService } from '../app.service';
 import { MasterServiceStub } from 'src/testing/stubs/master-service.stub';
 import { Subject, of } from 'rxjs';
+import { AlertService } from '../shared/alert.service';
 
 describe('MemberDetailsComponent', () => {
   let fixture: ComponentFixture<MemberDetailsComponent>;
@@ -28,6 +29,10 @@ describe('MemberDetailsComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: masterServiceStub.activatedRouteStub
+        },
+        {
+          provide: AlertService,
+          useValue: masterServiceStub.alertServiceStub
         }
       ]
     }).compileComponents();
@@ -42,8 +47,6 @@ describe('MemberDetailsComponent', () => {
     };
     fixture.detectChanges();
   });
-
-  // TODO: test when buttons are clicked that the trigger the methods
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -154,12 +157,44 @@ describe('MemberDetailsComponent', () => {
   });
 
   describe('onDelete', () => {
-    it('should call appService#deleteMember with the current memberId', () => {
+    let confirmSpy: jasmine.Spy;
+    beforeEach(() => {
+      confirmSpy = spyOn(window, 'confirm').and.returnValue(true);
+    });
+
+    it('should call appService#deleteMember with the current memberId if window#confirm returns true', () => {
       component.memberId = 1;
       component.onDelete();
       expect(
         masterServiceStub.appServiceStub.deleteMember
       ).toHaveBeenCalledWith(component.memberId);
+    });
+
+    it('should not call appService#deleteMember if window#confirm returns false', () => {
+      confirmSpy.and.returnValue(false);
+      component.onDelete();
+      expect(
+        masterServiceStub.appServiceStub.deleteMember
+      ).toHaveBeenCalledTimes(0);
+    });
+  });
+
+  describe('handleSuccess', () => {
+    const message = 'This is a test alert message';
+    it('should call alertService#alert with the message', () => {
+      component.handleSuccess(message);
+      expect(masterServiceStub.alertServiceStub.alert).toHaveBeenCalledTimes(1);
+      expect(masterServiceStub.alertServiceStub.alert).toHaveBeenCalledWith(
+        message
+      );
+    });
+
+    it('should call router#navigate to route to the members page', () => {
+      component.handleSuccess(message);
+      expect(masterServiceStub.routerStub.navigate).toHaveBeenCalledTimes(1);
+      expect(masterServiceStub.routerStub.navigate).toHaveBeenCalledWith([
+        '/message'
+      ]);
     });
   });
 
