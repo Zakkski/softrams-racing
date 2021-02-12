@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +14,22 @@ export class AppService {
   constructor(private http: HttpClient) {}
 
   // Returns all members
+  // TODO: IMplement delete with confirm?
+  // Members page needs mapping to team names
+  // Implement snackbar
+  // implement canDeactivate with edited page
+  // add error handling for form
+  // add loading spinner for members deatils and list page
+  // possibly lock fields for member details until 'edit' is pressed
   getMembers() {
     return this.http
       .get(`${this.api}/members`)
+      .pipe(catchError(this.handleError));
+  }
+
+  getMember(id: number) {
+    return this.http
+      .get(`${this.api}/members/${id}`)
       .pipe(catchError(this.handleError));
   }
 
@@ -23,9 +37,27 @@ export class AppService {
     this.username = name;
   }
 
-  addMember(memberForm) {}
+  addMember(memberForm) {
+    return this.http
+      .post(`${this.api}/members`, memberForm)
+      .pipe(catchError(this.handleError));
+  }
 
-  getTeams() {}
+  updateMember(memberId, memberForm) {
+    return this.http
+      .patch(`${this.api}/members/${memberId}`, memberForm)
+      .pipe(catchError(this.handleError));
+  }
+
+  deleteMember(memberId) {
+    return this.http
+      .delete(`${this.api}/members/${memberId}`)
+      .pipe(catchError(this.handleError));
+  }
+
+  getTeams() {
+    return this.http.get<any[]>(`${this.api}/teams`);
+  }
 
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
