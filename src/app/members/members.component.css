@@ -2,4 +2,11 @@
   margin-bottom: 10px;
 }
 
+.member-item {
+  transition: background-color 0.3s ease;
+}
 
+.member-item:hover {
+  cursor: pointer;
+  background-color: #dddddd;
+}

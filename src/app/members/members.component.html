@@ -1,5 +1,11 @@
 <div class="container-fluid">
-  <button id="addMemberButton" class="btn btn-primary pull-right" (click)="goToAddMemberForm()">Add Member</button>
+  <button
+    id="addMemberButton"
+    class="btn btn-primary pull-right"
+    (click)="goToAddMemberForm()"
+  >
+    Add Member
+  </button>
   <table class="table">
     <thead>
       <tr>
@@ -12,13 +18,17 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor='let member of members'>
-        <td>{{member?.id}}</td>
-        <td>{{member?.firstName}}</td>
-        <td>{{member?.lastName}}</td>
-        <td>{{member?.jobTitle}}</td>
-        <td>{{member?.team}}</td>
-        <td>{{member?.status}}</td>
+      <tr
+        class="member-item"
+        *ngFor="let member of members"
+        (click)="navigateToDetails(member)"
+      >
+        <td>{{ member?.id }}</td>
+        <td>{{ member?.firstName }}</td>
+        <td>{{ member?.lastName }}</td>
+        <td>{{ member?.jobTitle }}</td>
+        <td>{{ member?.team }}</td>
+        <td>{{ member?.status }}</td>
       </tr>
     </tbody>
   </table>
