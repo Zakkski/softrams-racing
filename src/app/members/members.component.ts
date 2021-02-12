@@ -23,8 +23,4 @@ export class MembersComponent implements OnInit {
   navigateToDetails(member) {
     this.router.navigate(['/members', member.id]);
   }
-
-  editMemberByID(id: number) {}
-
-  deleteMemberById(id: number) {}
 }
