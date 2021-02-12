@@ -62,15 +62,6 @@ app.get('/api/teams', (req, res) => {
   });
 });
 
-// TODO: do you need this?
-sendRequest = (url, res) => {
-  request(url, (err, response, body) => {
-    if (response.statusCode <= 500) {
-      res.send(body);
-    }
-  });
-};
-
 app.post('/api/members', (req, res) => {
   request.post(
     'http://localhost:3000/members',
@@ -82,7 +73,7 @@ app.post('/api/members', (req, res) => {
     },
     (err, response, body) => {
       if (response.statusCode <= 500) {
-        res.send();
+        res.send(res.body);
       }
     }
   );
@@ -99,7 +90,18 @@ app.patch('/api/members/:id', (req, res) => {
     },
     (err, response, body) => {
       if (response.statusCode <= 500) {
-        res.send();
+        res.send(res.body);
+      }
+    }
+  );
+});
+
+app.delete('/api/members/:id', (req, res) => {
+  request.delete(
+    `http://localhost:3000/members/${req.params.id}`,
+    (err, response, body) => {
+      if (response.statusCode <= 500) {
+        res.send(res.body);
       }
     }
   );
