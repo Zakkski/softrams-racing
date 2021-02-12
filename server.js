@@ -43,14 +43,66 @@ app.get('/api/members', (req, res) => {
   });
 });
 
-// TODO: Dropdown!
-app.get('/api/teams', (req, res) => {
-
+app.get('/api/members/:id', (req, res) => {
+  request(
+    `http://localhost:3000/members/${req.params.id}`,
+    (err, response, body) => {
+      if (response.statusCode <= 500) {
+        res.send(body);
+      }
+    }
+  );
 });
 
-// Submit Form!
-app.post('/api/addMember', (req, res) => {
+app.get('/api/teams', (req, res) => {
+  request('http://localhost:3000/teams', (err, response, body) => {
+    if (response.statusCode <= 500) {
+      res.send(body);
+    }
+  });
+});
 
+// TODO: do you need this?
+sendRequest = (url, res) => {
+  request(url, (err, response, body) => {
+    if (response.statusCode <= 500) {
+      res.send(body);
+    }
+  });
+};
+
+app.post('/api/members', (req, res) => {
+  request.post(
+    'http://localhost:3000/members',
+    {
+      body: JSON.stringify(req.body),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8'
+      }
+    },
+    (err, response, body) => {
+      if (response.statusCode <= 500) {
+        res.send();
+      }
+    }
+  );
+});
+
+app.patch('/api/members/:id', (req, res) => {
+  request.patch(
+    `http://localhost:3000/members/${req.params.id}`,
+    {
+      body: JSON.stringify(req.body),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8'
+      }
+    },
+    (err, response, body) => {
+      if (response.statusCode <= 500) {
+        res.send();
+      }
+    }
+  );
 });
 
 app.get('*', (req, res) => {
