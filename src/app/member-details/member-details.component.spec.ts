@@ -1,15 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { MemberDetailsComponent } from './member-details.component';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
-import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
-
-import { HttpClientModule } from '@angular/common/http';
+import { FormBuilder } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { AppService } from '../app.service';
+import { of } from 'rxjs';
 
 // Bonus points!
 describe('MemberDetailsComponent', () => {
@@ -19,19 +16,19 @@ describe('MemberDetailsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [MemberDetailsComponent],
-      imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        HttpClientModule,
-        RouterModule
-      ],
+      imports: [FormsModule, ReactiveFormsModule, RouterTestingModule],
       providers: [
-        HttpClient,
         FormBuilder,
         {
-          provide: Router,
+          provide: AppService,
           useClass: class {
-            navigate = jasmine.createSpy('navigate');
+            getTeams = jasmine.createSpy('getTeams').and.returnValue(of([]));
+          }
+        },
+        {
+          provide: ActivatedRoute,
+          useClass: class {
+            snapshot = { params: { id: 3 }, url: [{ path: 'new' }] };
           }
         }
       ]
