@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -15,8 +15,9 @@ import { MembersComponent } from './members/members.component';
 import { LoginComponent } from './login/login.component';
 import { SharedModule } from './shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AuthGuard } from './guards/auth.guard';
 
-const ROUTES = [
+const ROUTES: Routes = [
   {
     path: '',
     redirectTo: 'login',
@@ -28,7 +29,8 @@ const ROUTES = [
       { path: '', component: MembersComponent },
       { path: 'new', component: MemberDetailsComponent },
       { path: ':id', component: MemberDetailsComponent }
-    ]
+    ],
+    canActivate: [AuthGuard]
   },
   {
     path: 'login',

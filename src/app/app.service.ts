@@ -16,7 +16,6 @@ export class AppService {
   // 18. candeactivate guard for member form
   // 15. member detail form should have client side validation
   // 16. member detail form should have server side validation
-  // 2. Implement snackbar
   // 3. implement canDeactivate with edited page
   // 4. add error handling for form
   // 5. add loading spinner for members deatils and list page
