@@ -13,8 +13,9 @@ import { BannerComponent } from './banner/banner.component';
 import { MemberDetailsComponent } from './member-details/member-details.component';
 import { MembersComponent } from './members/members.component';
 import { LoginComponent } from './login/login.component';
+import { SharedModule } from './shared/shared.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-// We may be missing a route...
 const ROUTES = [
   {
     path: '',
@@ -35,7 +36,6 @@ const ROUTES = [
   }
 ];
 
-// Notice how both FormsModule and ReactiveFormsModule imported...choices, choices!
 @NgModule({
   declarations: [
     AppComponent,
@@ -49,7 +49,9 @@ const ROUTES = [
     RouterModule.forRoot(ROUTES, { useHash: true }),
     ReactiveFormsModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    SharedModule,
+    BrowserAnimationsModule
   ],
   providers: [AppService, HttpClient],
   bootstrap: [AppComponent]

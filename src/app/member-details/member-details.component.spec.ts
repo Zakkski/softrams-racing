@@ -1,10 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MemberDetailsComponent, Member } from './member-details.component';
+import { MemberDetailsComponent } from './member-details.component';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
 import { AppService } from '../app.service';
 import { MasterServiceStub } from 'src/testing/stubs/master-service.stub';
 import { Subject, of } from 'rxjs';
@@ -19,7 +18,7 @@ describe('MemberDetailsComponent', () => {
     masterServiceStub = new MasterServiceStub();
     TestBed.configureTestingModule({
       declarations: [MemberDetailsComponent],
-      imports: [FormsModule, ReactiveFormsModule, RouterTestingModule],
+      imports: [FormsModule, ReactiveFormsModule],
       providers: [
         FormBuilder,
         {
@@ -29,6 +28,10 @@ describe('MemberDetailsComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: masterServiceStub.activatedRouteStub
+        },
+        {
+          provide: Router,
+          useValue: masterServiceStub.routerStub
         },
         {
           provide: AlertService,
@@ -193,7 +196,7 @@ describe('MemberDetailsComponent', () => {
       component.handleSuccess(message);
       expect(masterServiceStub.routerStub.navigate).toHaveBeenCalledTimes(1);
       expect(masterServiceStub.routerStub.navigate).toHaveBeenCalledWith([
-        '/message'
+        '/members'
       ]);
     });
   });
