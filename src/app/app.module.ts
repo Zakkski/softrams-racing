@@ -16,6 +16,7 @@ import { LoginComponent } from './login/login.component';
 import { SharedModule } from './shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthGuard } from './guards/auth.guard';
+import { DeactivateGuard } from './guards/deactivate.guard';
 
 const ROUTES: Routes = [
   {
@@ -27,8 +28,16 @@ const ROUTES: Routes = [
     path: 'members',
     children: [
       { path: '', component: MembersComponent },
-      { path: 'new', component: MemberDetailsComponent },
-      { path: ':id', component: MemberDetailsComponent }
+      {
+        path: 'new',
+        component: MemberDetailsComponent,
+        canDeactivate: [DeactivateGuard]
+      },
+      {
+        path: ':id',
+        component: MemberDetailsComponent,
+        canDeactivate: [DeactivateGuard]
+      }
     ],
     canActivate: [AuthGuard]
   },
@@ -55,7 +64,7 @@ const ROUTES: Routes = [
     SharedModule,
     BrowserAnimationsModule
   ],
-  providers: [AppService, HttpClient],
+  providers: [AppService, HttpClient, DeactivateGuard, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
