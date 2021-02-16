@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { AppService } from '../app.service';
 
@@ -9,11 +14,13 @@ import { AppService } from '../app.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private router: Router, private appService: AppService) {
-  }
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private appService: AppService
+  ) {}
 
   ngOnInit() {
     this.loginForm = this.fb.group({
@@ -27,5 +34,4 @@ export class LoginComponent implements OnInit {
     this.appService.setUsername(this.loginForm.value.username);
     this.router.navigate(['/members']);
   }
-
 }
