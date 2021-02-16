@@ -20,6 +20,7 @@
             id="firstName"
             formControlName="firstName"
             placeholder="First Name"
+            [ngClass]="{ 'is-invalid': isInvalidControl('firstName') }"
           />
         </div>
         <div class="col-md-6">
@@ -29,6 +30,7 @@
             id="lastName"
             formControlName="lastName"
             placeholder="Last Name"
+            [ngClass]="{ 'is-invalid': isInvalidControl('lastName') }"
           />
         </div>
       </div>
@@ -41,9 +43,15 @@
             id="jobTitle"
             formControlName="jobTitle"
             placeholder="Job Title"
+            [ngClass]="{ 'is-invalid': isInvalidControl('jobTitle') }"
           />
         </div>
-        <select id="team" class="col-md-6 custom-select" formControlName="team">
+        <select
+          id="team"
+          class="col-md-6 custom-select"
+          formControlName="team"
+          [ngClass]="{ 'is-invalid': isInvalidControl('team') }"
+        >
           <option>-- Select a Team --</option>
           <option *ngFor="let team of teams" [ngValue]="team.teamName">{{
             team.teamName
@@ -59,6 +67,7 @@
               value="Active"
               name="status"
               formControlName="status"
+              [ngClass]="{ 'is-invalid': isInvalidControl('status') }"
             />
             Active
           </label>
@@ -68,14 +77,18 @@
               value="Inactive"
               name="status"
               formControlName="status"
+              [ngClass]="{ 'is-invalid': isInvalidControl('status') }"
             />
             Inactive
           </label>
         </div>
       </div>
     </div>
-    <!--Disable if form is invalid-->
-    <button type="submit" class="btn btn-primary pull-right">
+    <button
+      type="submit"
+      class="btn btn-primary pull-right"
+      [disabled]="memberForm.invalid"
+    >
       Save Member
     </button>
     <button

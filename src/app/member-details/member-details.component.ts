@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormControl
+} from '@angular/forms';
 import { AppService } from '../app.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { tap } from 'rxjs/operators';
@@ -106,6 +111,7 @@ export class MemberDetailsComponent implements OnInit {
 
   handleSuccess(message: string): void {
     this.alertService.alert(message);
+    this.memberForm.markAsPristine();
     this.router.navigate(['/members']);
   }
 
@@ -121,5 +127,18 @@ export class MemberDetailsComponent implements OnInit {
       team: this.fb.control('', Validators.required),
       status: this.fb.control('', Validators.required)
     });
+  }
+
+  canExit(): boolean {
+    return this.memberForm.dirty
+      ? window.confirm(
+          'If you leave this page your current changes will not be saved'
+        )
+      : true;
+  }
+
+  isInvalidControl(controlName: string): boolean {
+    const control = this.memberForm.get(controlName);
+    return control.invalid && control.touched;
   }
 }
