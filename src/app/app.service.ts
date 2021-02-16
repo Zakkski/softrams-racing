@@ -11,23 +11,6 @@ export class AppService {
   username: string;
 
   constructor(private http: HttpClient) {}
-  // TODO:
-  // 14. Add authguard (can't access pages unless logged in)
-  // 18. candeactivate guard for member form
-  // 15. member detail form should have client side validation
-  // 16. member detail form should have server side validation
-  // 3. implement canDeactivate with edited page
-  // 4. add error handling for form
-  // 5. add loading spinner for members deatils and list page
-  // 6. possibly lock fields for member details until 'edit' is pressed
-  // 7. Test Login component
-  // 8. test app component
-  // 9. test component interactions Member comp
-  // 10. test component interactions Member detail comp
-  // 11. investigate the 'cannot match routes' in test errors (app component)
-  // 17. refactor server?
-  // 12. final proof and refactor
-  // 13. Try running with zip file
 
   getMembers() {
     return this.http
