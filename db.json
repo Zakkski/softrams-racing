@@ -23,22 +23,6 @@
       "jobTitle": "Reserve Driver",
       "team": "Formula 1 - Car 77",
       "status": "Inactive"
-    },
-    {
-      "firstName": "Zachary",
-      "lastName": "Kwiecinski",
-      "jobTitle": "Some Guy",
-      "team": "World Endurance Championship - Car 99",
-      "status": "Inactive",
-      "id": 4
-    },
-    {
-      "firstName": "Nik",
-      "lastName": "Kwiecinski",
-      "jobTitle": "Girlfriend",
-      "team": "World Endurance Championship - Car 99",
-      "status": "Inactive",
-      "id": 5
     }
   ],
   "teams": [
